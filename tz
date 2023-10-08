@@ -1,0 +1,42 @@
+Back-end:
+Ауторизація: 
+ 1. Логін.
+ 2. Регістрація.
+ 3. Логаут.
+ 4. Current user.
+
+Корзина: 
+ 5. Оформлення замовлення (на бек);
+
+Пошук: 
+ 6. Пошук товарів через бек (header) 
+ 7. 
+
+Views: {
+Type: Number,
+Default: 0
+}
+
+PiZZA => $inc: {views: 1}
+
+PIZZA => ‘/catalog/:catagory’ => find({catagory})  => FoodModal.findByIdAndUpdate(id, {
+$inc: {views: 1}
+})
+
+FoodModal.find().sort(‘-views’)
+
+/pizza => req, params = category => FoodModal.find({category})
+
+
+
+
+ItemSchems = ({
+Name,
+Img
+Desc,
+Price,
+weight
+Category 
+Type: Schema.Types.ObjectId
+ ref(‘User’)
+})

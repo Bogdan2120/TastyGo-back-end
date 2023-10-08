@@ -1,0 +1,3 @@
+HOST_DB = mongodb+srv://rossgaluzinskiy:wkwQMjhCOwCpCXtN@cluster0.ydjiffn.mongodb.net/foods-db?retryWrites=true&w=majority
+PORT = 3005 
+SECRET_KEY = UK9cAtM5n6BQ
