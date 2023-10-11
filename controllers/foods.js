@@ -1,16 +1,17 @@
 const { HttpError, ctrlWrapper } = require("../hellpers");
 const { FoodModel } = require("../models/Food");
+const pagination = require("../utils/pagination");
 
 const getAllFoods = async (req, res) => {
-  const { page = 1, limit = 12 } = req.query;
-  const skip = (page - 1) * limit;
+  const { page: currentPage, limit: currentLimit } = req.query;
+  const {page, limit, skip} = pagination(currentPage, currentLimit);
 
   const foods = await FoodModel.find({}, "", {
     skip,
     limit,
   });
 
-  const count = await FoodModel.countDocuments();
+  const count = await FoodModel.find().count();
 
   if (!foods) {
     throw HttpError(404, `Foods with not found`);

@@ -15,7 +15,7 @@ const addNewReview = async (req, res) => {
 
   const { email } = await UserModal.findById(userId);
 
-  const result = await ReviewModel.create({ ...req.body, email });
+  const result = await ReviewModel.create({ ...req.body, email, owner: userId });
   res.status(201).json(result);
 };
 
