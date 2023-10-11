@@ -8,6 +8,7 @@ const { HOST_DB, PORT = 3005 } = process.env;
 const authRouter = require("./routes/auth");
 const foodRouter = require("./routes/foods");
 const categoryRouter = require("./routes/category");
+const reviewRouter = require("./routes/review");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/food", foodRouter);
 app.use("/api/category", categoryRouter);
+app.use("/api/review", reviewRouter);
 
 mongoose
   .connect(HOST_DB)
