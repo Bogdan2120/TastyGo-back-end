@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RossHaluz/TastyGo-back-end.git"
+    "url": "git+https://github.com/Bogdan2120/TastyGo-back-end.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RossHaluz/TastyGo-back-end/issues"
+    "url": "https://github.com/Bogdan2120/TastyGo-back-end/issues"
   },
-  "homepage": "https://github.com/RossHaluz/TastyGo-back-end#readme",
+  "homepage": "https://github.com/Bogdan2120/TastyGo-back-end#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
