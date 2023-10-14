@@ -23,6 +23,10 @@ const reviewShema = new Schema(
       type: String,
       required: [true, "Email is required"],
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
   },
   { versionKey: false, timestamps: true }
 );

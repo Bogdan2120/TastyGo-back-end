@@ -1,6 +1,7 @@
 const { HttpError, ctrlWrapper } = require("../hellpers");
 const { CategoryModel } = require("../models/Category");
 const { FoodModel } = require("../models/Food");
+const pagination = require("../utils/pagination");
 
 const getAllCategory = async (req, res) => {
   const category = await CategoryModel.find();
@@ -22,29 +23,36 @@ const getSortPopularCategory = async (req, res) => {
 
 const getItemsCategoryAndUpdateView = async (req, res) => {
   const { categoryName } = req.params;
-  const { page = 1, limit = 12 } = req.query;
-  const skip = (page - 1) * limit;
+  const { page: currentPage, limit: currentLimit } = req.query;
+  const {page, limit, skip} = pagination(currentPage, currentLimit);
 
   const foodForCategory = await FoodModel.find({ category: categoryName }, "", {
     skip,
     limit,
   });
 
-  const count = await FoodModel.countDocuments({ category: categoryName });
+  const count = await FoodModel.find({ category: categoryName }).count();
 
   if (!foodForCategory) {
     throw HttpError(404, `Category with ${categoryName} not found`);
   }
 
-  const resultUpdate = await CategoryModel.findOneAndUpdate(
-    { title: categoryName },
+  const findCategory = await CategoryModel.findOne({title: categoryName});
+
+  if(!findCategory){
+    throw HttpError(404, 'Category not found')
+  }
+
+  const resultUpdate = await CategoryModel.findByIdAndUpdate(
+    findCategory._id,
     {
       $inc: { views: 1 },
-    }
+    },
+    {new: true}
   );
 
   if (!resultUpdate) {
-    throw HttpError(404, `Category with ${categoryName} doesn\'t update views`);
+    throw HttpError(404, `Category not found doesn\'t update views`);
   }
 
   res.json({
