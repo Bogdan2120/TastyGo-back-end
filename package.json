@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Bogdan2120/TastyGo-back-end#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "cloudinary": "^1.41.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
