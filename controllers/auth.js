@@ -111,7 +111,7 @@ const currentUser = async (req, res) => {
 
 const updateAvatar = async (req, res) => {
   const { id } = req.userId;
-  // const user = await UserModal.findById(id);
+  const user = await UserModal.findById(id);
   const { path: tempUpload, filename } = req.file;
 
   const avatarName = `${id}_${filename}`;
