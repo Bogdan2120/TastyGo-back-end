@@ -14,19 +14,24 @@ const reviewShema = new Schema(
       type: Number,
       required: true,
       max: 5,
+      default: 0,
     },
     date: {
       type: Date,
       default: Date.now,
     },
-    email: {
+    name: {
       type: String,
-      required: [true, "Email is required"],
+      required: true,
+    },
+    avatarURL: {
+      type: String,
+      required: true,
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
+      ref: "User",
+    },
   },
   { versionKey: false, timestamps: true }
 );
