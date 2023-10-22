@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs/promises");
 const path = require("path");
 const Jimp = require("jimp");
+const { options } = require("joi");
 const cloudinary = require("cloudinary").v2;
 
 const { SECRET_KEY, CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET } = process.env;
@@ -35,14 +36,26 @@ const registerUser = async (req, res) => {
   }
   const hashPassword = await bcrypt.hash(password, 10);
   const hashEmail = await bcrypt.hash(email, 10);
-  const avatarDef = await cloudinary.uploader.upload(avatarDefPath, {
-    public_id: `default_avatar_${hashEmail}`,
-  });
+  const sanitizedHash = hashEmail.replace(/\//g, "");
+  const options = {
+    public_id: `${sanitizedHash}`,
+    folder: "TastyGo_Project/users_avatars",
+    overwrite: true,
+  };
+  const avatarDef = await cloudinary.uploader.upload(
+    avatarDefPath,
+    options
+    // { folder: "home" },
+    // {
+    //   public_id: `default_${hashEmail}`,
+    // }
+  );
 
   const newUser = await UserModal.create({
     email,
     password: hashPassword,
     avatarURL: avatarDef.secure_url,
+    avatarNAME: sanitizedHash,
     name: name,
     phone: phone,
     subscribtion: subscribtion,
@@ -113,9 +126,13 @@ const updateAvatar = async (req, res) => {
   const { id } = req.userId;
   const user = await UserModal.findById(id);
   const { path: tempUpload, filename } = req.file;
-
   const avatarName = `${id}_${filename}`;
   const resultUpload = path.join(avatarDir, avatarName);
+  const options = {
+    public_id: user.avatarNAME,
+    folder: "TastyGo_Project/users_avatars",
+    overwrite: true,
+  };
 
   const optimizeAvatar = await Jimp.read(tempUpload);
   optimizeAvatar
@@ -125,9 +142,7 @@ const updateAvatar = async (req, res) => {
   // await fs.rename(tempUpload, resultUpload);
   await fs.unlink(tempUpload);
 
-  const avatarURL = await cloudinary.uploader.upload(resultUpload, {
-    public_id: id,
-  });
+  const avatarURL = await cloudinary.uploader.upload(resultUpload, options);
   await UserModal.findByIdAndUpdate(id, { avatarURL: avatarURL.secure_url });
   res.json(avatarURL.secure_url);
 
