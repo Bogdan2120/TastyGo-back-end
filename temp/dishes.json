@@ -1,0 +1,110 @@
+[
+  {
+    "title": "Salad with Croutons",
+    "description": "Bean sprouts, fresh mixed greens, seasoned croutons, cooked and sliced meat (chicken, beef, or pork), sweet pepper",
+    "price": 349,
+    "weigth": 430,
+    "category": "salads",
+    "seasonal": true,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977250/TastyGo_Project/content/dishes_png/Salad_with_Croutons_jvothx.png"
+  },
+  {
+    "title": "Salad with mussels",
+    "description": "Mussels, mustard, cucumber, parsley, iceberg lettuce, boiled quail eggs, red onion, radish, balsamic vinegar, lemon juice",
+    "price": 349,
+    "weigth": 300,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977231/TastyGo_Project/content/dishes_png/Salad_with_mussels_nkacws.png"
+  },
+  {
+    "title": "Salad with tomatoes",
+    "description": "Tomatoes, cucumber, red onions and lettuce leaves, fresh mixed greens, parsley",
+    "price": 319,
+    "weigth": 400,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977241/TastyGo_Project/content/dishes_png/Salad_with_tomatoes_wcfguw.png"
+  },
+  {
+    "title": "Salad with salmon",
+    "description": "Fresh mixed greens, grilled or smoked salmon fillet, cherry tomatoes, cucumber, avocado, fresh dill, almonds or walnuts.",
+    "price": 399,
+    "weigth": 300,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977235/TastyGo_Project/content/dishes_png/Salad_with_salmon_p3a5f7.png"
+  },
+  {
+    "title": "Salad with chicken",
+    "description": "Fresh mixed greens, tomato, chicken, hard-boiled eggs, avocado, nuts, shaved Parmesan cheese",
+    "price": 299,
+    "weigth": 450,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977255/TastyGo_Project/content/dishes_png/Salad_with_chicken_mvd5ei.png"
+  },
+  {
+    "title": "Salad with Radishes",
+    "description": "Fresh radishes, fresh mixed greens, white onion, lavash bread, parsley, cilantro, mint, chopped fresh herbs",
+    "price": 379,
+    "weigth": 450,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977237/TastyGo_Project/content/dishes_png/Salad_with_Radishes_tew4l9.png"
+  },
+  {
+    "title": "Salad with smoked chicken ",
+    "description": "Smoked chicken breast, fresh mixed greens, avocado, red onion, shaved parmesan cheese  ",
+    "price": 359,
+    "weigth": 400,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977248/TastyGo_Project/content/dishes_png/Salad_with_smoked_chicken_oj2kv9.png"
+  },
+  {
+    "title": "Salad with tuna ",
+    "description": "Tuna, cherry tomatoes, red onion, cucumber, boiled eggs, red cabbage,  lettuce leaves, chopped fresh herbs",
+    "price": 379,
+    "weigth": 300,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977239/TastyGo_Project/content/dishes_png/Salad_with_tuna_irketz.png"
+  },
+  {
+    "title": "salad with cabbage romanesko",
+    "description": "Cabbage romanesko, green pepper, red pepper, red onion, tomatoes, cucumber, red onions and lettuce leaves",
+    "price": 399,
+    "weigth": 400,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977253/TastyGo_Project/content/dishes_png/salad_with_cabbage_romanesko_afmjbi.png"
+  },
+  {
+    "title": "Salad with Beef",
+    "description": "Beef, green pepper, red pepper, peas in a pod, sesame seeds, zucchini, onion, chopped fresh herbs",
+    "price": 319,
+    "weigth": 300,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977232/TastyGo_Project/content/dishes_png/Salad_with_Beef_qsyzwh.png"
+  },
+  {
+    "title": "Salad with crispy pork belly",
+    "description": "Stir fried chinese kale, crispy pork belly,  chopped fresh herbs",
+    "price": 349,
+    "weigth": 350,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977246/TastyGo_Project/content/dishes_png/Salad_with_crispy_pork_belly_nmgwdo.png"
+  },
+  {
+    "title": "Vegan salad with quinua",
+    "description": "Quinua, green pepper, avocado, black beans, tomatoes, sweet corn, chopped fresh herbs",
+    "price": 359,
+    "weigth": 350,
+    "category": "salads",
+    "seasonal": false,
+    "imgUrl": "https://res.cloudinary.com/dxmkpbs6r/image/upload/v1697977243/TastyGo_Project/content/dishes_png/Vegan_salad_with_quinua_beavtx.png"
+  }
+]
