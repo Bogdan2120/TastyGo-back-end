@@ -4,6 +4,7 @@ const {
   loginUser,
   logoutUser,
   currentUser,
+  updateUser,
   updateAvatar,
 } = require("../controllers/auth");
 const checkAuth = require("../middlewares/checkAuth");
@@ -22,6 +23,9 @@ router.post("/logout", checkAuth, logoutUser);
 
 //Current user
 router.get("/current-user", checkAuth, currentUser);
+
+//Update user data
+router.patch("/update-user", checkAuth, updateUser);
 
 //Upload avatar
 router.patch("/avatars", checkAuth, upload.single("avatar"), updateAvatar);
