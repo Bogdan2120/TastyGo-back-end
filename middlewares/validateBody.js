@@ -1,22 +1,23 @@
 const { HttpError } = require("../hellpers");
 
-const validateBody = schema => {
-    const func = async (req, res, next) => {
-        try {
-            const {error} = schema.validate(req.body);
-            if(error) {
-                let errorName = ''
-             error.details.map(item => errorName = item.message)
+const validateBody = (schema) => {
+  const func = async (req, res, next) => {
+    try {
+      const { error } = schema.validate(req.body);
 
-               throw HttpError(400, errorName)
-            }
+      if (error) {
+        let errorName = "";
+        error.details.map((item) => (errorName = item.message));
 
-            next()
-        } catch (error) {
-            next(error)
-        }
+        throw HttpError(400, errorName);
+      }
+
+      next();
+    } catch (error) {
+      next(error);
     }
-    return func
-}
+  };
+  return func;
+};
 
 module.exports = validateBody;

@@ -28,7 +28,7 @@ const avatarDefPath = path.join(
 const avatarDir = path.join(__dirname, "../", "temp");
 
 const registerUser = async (req, res) => {
-  const { email, password, name, phone, subscribtion } = req.body;
+  const { email, password, firstName, phoneFirst, subscribtion } = req.body;
 
   const user = await UserModal.findOne({ email });
   if (user) {
@@ -42,23 +42,18 @@ const registerUser = async (req, res) => {
     folder: "TastyGo_Project/users_avatars",
     overwrite: true,
   };
-  const avatarDef = await cloudinary.uploader.upload(
-    avatarDefPath,
-    options
-    // { folder: "home" },
-    // {
-    //   public_id: `default_${hashEmail}`,
-    // }
-  );
+  const avatarDef = await cloudinary.uploader.upload(avatarDefPath, options);
 
   const newUser = await UserModal.create({
-    email,
-    password: hashPassword,
-    avatarURL: avatarDef.secure_url,
-    avatarNAME: sanitizedHash,
-    name: name,
-    phone: phone,
-    subscribtion: subscribtion,
+    user: {
+      email,
+      password: hashPassword,
+      avatarURL: avatarDef.secure_url,
+      avatarNAME: sanitizedHash,
+      firstName: firstName,
+      phoneFirst: phoneFirst,
+      subscribtion: subscribtion,
+    },
   });
 
   const payload = {
@@ -78,24 +73,26 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  const user = await UserModal.findOne({ email });
+
+  const userData = await UserModal.findOne({ "user.email": email });
   if (!email) {
     throw HttpError(401, "Not authorized");
   }
-  const hashPassword = await bcrypt.compare(password, user.password);
+
+  const hashPassword = await bcrypt.compare(password, userData.user.password);
 
   if (!hashPassword) {
     throw HttpError(401, "Email or password is wrong");
   }
 
   const payload = {
-    id: user.id,
+    id: userData.id,
   };
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
 
   const updateUser = await UserModal.findByIdAndUpdate(
-    user._id,
+    userData._id,
     { token },
     { new: true }
   );
@@ -122,9 +119,37 @@ const currentUser = async (req, res) => {
   res.json(user);
 };
 
+const updateUser = async (req, res) => {
+  const { id } = req.userId;
+  const { body } = req;
+  // const user = await UserModal.findByIdAndUpdate(id, { body }, { new: true });
+  // console.log(user);
+  // if (!user) {
+  //   throw HttpError(404, "User not found");
+  // }
+  // res.json(user);
+  try {
+    const user = await UserModal.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const updatedUser = { user: { ...user.user, ...body } };
+    // console.log(updatedUser);
+    const result = await UserModal.findByIdAndUpdate(id, updatedUser, {
+      new: true,
+    });
+
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user" });
+  }
+};
+
 const updateAvatar = async (req, res) => {
   const { id } = req.userId;
-  const user = await UserModal.findById(id);
+  const { user } = await UserModal.findById(id);
   const { path: tempUpload, filename } = req.file;
   const avatarName = `${id}_${filename}`;
   const resultUpload = path.join(avatarDir, avatarName);
@@ -135,26 +160,15 @@ const updateAvatar = async (req, res) => {
   };
 
   const optimizeAvatar = await Jimp.read(tempUpload);
-  optimizeAvatar
-    .cover(250, 250) // resize
-    .quality(60) // set JPEG quality
-    .write(resultUpload); // save
+  optimizeAvatar.cover(250, 250).quality(60).write(resultUpload);
   // await fs.rename(tempUpload, resultUpload);
   await fs.unlink(tempUpload);
 
   const avatarURL = await cloudinary.uploader.upload(resultUpload, options);
-  await UserModal.findByIdAndUpdate(id, { avatarURL: avatarURL.secure_url });
+  await UserModal.findByIdAndUpdate(id, {
+    user: { ...user, avatarURL: avatarURL.secure_url },
+  });
   res.json(avatarURL.secure_url);
-
-  // try {
-  //   const result = await cloudinary.uploader.upload(resultUpload, {
-  //     public_id: id,
-  //   });
-  //   res.json(result.secure_url);
-  // } catch (err) {
-  //   console.error(err);
-  //   res.status(500).json({ error: "Failed to upload avatar to Cloudinary" });
-  // }
   await fs.unlink(resultUpload);
 };
 
@@ -163,5 +177,6 @@ module.exports = {
   loginUser: ctrlWrapper(loginUser),
   logoutUser: ctrlWrapper(logoutUser),
   currentUser: ctrlWrapper(currentUser),
+  updateUser: ctrlWrapper(updateUser),
   updateAvatar: ctrlWrapper(updateAvatar),
 };
