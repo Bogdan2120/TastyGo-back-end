@@ -159,17 +159,17 @@ const updateAvatar = async (req, res) => {
     overwrite: true,
   };
 
-  const optimizeAvatar = await Jimp.read(tempUpload);
-  optimizeAvatar.cover(250, 250).quality(60).write(resultUpload);
-  // await fs.rename(tempUpload, resultUpload);
-  await fs.unlink(tempUpload);
+  // const optimizeAvatar = await Jimp.read(tempUpload);
+  // optimizeAvatar.cover(250, 250).quality(60).write(resultUpload);
+  // // await fs.rename(tempUpload, resultUpload);
+  // await fs.unlink(tempUpload);
 
-  const avatarURL = await cloudinary.uploader.upload(resultUpload, options);
+  const avatarURL = await cloudinary.uploader.upload(tempUpload, options);
   await UserModal.findByIdAndUpdate(id, {
     user: { ...user, avatarURL: avatarURL.secure_url },
   });
   res.json(avatarURL.secure_url);
-  await fs.unlink(resultUpload);
+  // await fs.unlink(resultUpload);
 };
 
 const deleteAvatar = async (req, res) => {
