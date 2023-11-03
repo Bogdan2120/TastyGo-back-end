@@ -159,8 +159,8 @@ const updateAvatar = async (req, res) => {
     overwrite: true,
   };
 
-  const optimizeAvatar = await Jimp.read(tempUpload);
-  optimizeAvatar.cover(250, 250).quality(60).write(resultUpload);
+  // const optimizeAvatar = await Jimp.read(tempUpload);
+  //optimizeAvatar.cover(250, 250).quality(60).write(resultUpload);
   // await fs.rename(tempUpload, resultUpload);
   await fs.unlink(tempUpload);
 
