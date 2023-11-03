@@ -172,6 +172,24 @@ const updateAvatar = async (req, res) => {
   await fs.unlink(resultUpload);
 };
 
+const deleteAvatar = async (req, res) => {
+  const { id } = req.userId;
+  const { user } = await UserModal.findById(id);
+
+  const hashEmail = await bcrypt.hash(user.email, 10);
+  const sanitizedHash = hashEmail.replace(/\//g, "");
+  const options = {
+    public_id: `${sanitizedHash}`,
+    folder: "TastyGo_Project/users_avatars",
+    overwrite: true,
+  };
+  const avatarDef = await cloudinary.uploader.upload(avatarDefPath, options);
+  await UserModal.findByIdAndUpdate(id, {
+    user: { ...user, avatarURL: avatarDef.secure_url },
+  });
+  res.json(avatarDef.secure_url);
+};
+
 module.exports = {
   registerUser: ctrlWrapper(registerUser),
   loginUser: ctrlWrapper(loginUser),
@@ -179,4 +197,5 @@ module.exports = {
   currentUser: ctrlWrapper(currentUser),
   updateUser: ctrlWrapper(updateUser),
   updateAvatar: ctrlWrapper(updateAvatar),
+  deleteAvatar: ctrlWrapper(deleteAvatar),
 };
