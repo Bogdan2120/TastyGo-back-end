@@ -4,7 +4,7 @@ const pagination = require("../utils/pagination");
 
 const getAllFoods = async (req, res) => {
   const { page: currentPage, limit: currentLimit } = req.query;
-  const {page, limit, skip} = pagination(currentPage, currentLimit);
+  const { page, limit, skip } = pagination(currentPage, currentLimit);
 
   const foods = await FoodModel.find({}, "", {
     skip,
@@ -35,6 +35,28 @@ const getFoodsById = async (req, res) => {
   res.json(food);
 };
 
+const getFoodByCategory = async (req, res) => {
+  const { category } = req.params;
+  const { page: currentPage, limit: currentLimit } = req.query;
+  const { page, limit, skip } = pagination(currentPage, currentLimit);
+
+  const foods = await FoodModel.find({ category }, "", {
+    skip,
+    limit,
+  });
+  const count = await FoodModel.find({ category }).count();
+
+  if (!foods) {
+    throw HttpError(404, `Food with category "${category}" not found`);
+  }
+  res.json({
+    foods,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+    totalFoods: count,
+  });
+};
+
 const getFoodsSeasonal = async (req, res) => {
   const seasonalFoods = await FoodModel.find({ seasonal: true }).limit(10);
   if (!seasonalFoods) {
@@ -48,4 +70,5 @@ module.exports = {
   getAllFoods: ctrlWrapper(getAllFoods),
   getFoodsById: ctrlWrapper(getFoodsById),
   getFoodsSeasonal: ctrlWrapper(getFoodsSeasonal),
+  getFoodByCategory: ctrlWrapper(getFoodByCategory),
 };
