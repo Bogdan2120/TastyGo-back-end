@@ -60,10 +60,66 @@ const getFoodByCategory = async (req, res) => {
 const getFoodsSeasonal = async (req, res) => {
   const seasonalFoods = await FoodModel.find({ seasonal: true }).limit(10);
   if (!seasonalFoods) {
-    throw HttpError(404, `Food with category "${seasonal}" not found`);
+    throw HttpError(404, `Food with category not found`);
   }
 
   res.json(seasonalFoods);
+};
+
+const getSortPopularFoods = async (req, res) => {
+  const { page: currentPage, limit: currentLimit } = req.query;
+  const { page, limit, skip } = pagination(currentPage, currentLimit);
+
+  const popularFoods = await FoodModel.find({}, "", {
+    skip,
+    limit,
+  }).sort("-popular");
+
+  const count = await FoodModel.find().count();
+
+  if (!popularFoods) {
+    throw HttpError(404, `Food with category not found`);
+  }
+
+  res.json({
+    popularFoods,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+    totalFoods: count,
+  });
+};
+
+const getSearchFoods = async (req, res) => {
+  const { page: currentPage, limit: currentLimit, search } = req.query;
+  const { page, limit, skip } = pagination(currentPage, currentLimit);
+
+  const searchFoods = await FoodModel.find({}, "", {
+    skip,
+    limit,
+  });
+
+  if (!searchFoods) {
+    throw HttpError(404, `Search not found`);
+  }
+
+  const newSearch = search.replace(/\+/gi, " ");
+  const lowerCaseSearch = newSearch.toLowerCase();
+
+  const filterFood = searchFoods.filter(({ title }) => {
+    const lowerCaseTitle = title.toLowerCase();
+    return lowerCaseTitle.includes(lowerCaseSearch);
+  });
+
+  if (!filterFood) {
+    throw HttpError(404, `Search not found`);
+  }
+
+  res.json({
+    filterFood,
+    totalPages: Math.ceil(filterFood.length / limit),
+    currentPage: page,
+    totalSearchFoods: filterFood.length,
+  });
 };
 
 module.exports = {

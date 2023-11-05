@@ -4,7 +4,9 @@ const {
   loginUser,
   logoutUser,
   currentUser,
+  updateUser,
   updateAvatar,
+  deleteAvatar,
 } = require("../controllers/auth");
 const checkAuth = require("../middlewares/checkAuth");
 const validateBody = require("../middlewares/validateBody");
@@ -23,7 +25,13 @@ router.post("/logout", checkAuth, logoutUser);
 //Current user
 router.get("/current-user", checkAuth, currentUser);
 
+//Update user data
+router.patch("/update-user", checkAuth, updateUser);
+
 //Upload avatar
 router.patch("/avatars", checkAuth, upload.single("avatar"), updateAvatar);
+
+//Delete avatar
+router.delete("/delete-avatar", checkAuth, deleteAvatar);
 
 module.exports = router;

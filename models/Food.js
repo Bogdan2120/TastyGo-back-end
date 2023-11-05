@@ -42,6 +42,11 @@ const foodsShema = new Schema(
       default: false,
       required: true,
     },
+    popular: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );
