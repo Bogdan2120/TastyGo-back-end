@@ -126,5 +126,6 @@ module.exports = {
   getAllFoods: ctrlWrapper(getAllFoods),
   getFoodsById: ctrlWrapper(getFoodsById),
   getFoodsSeasonal: ctrlWrapper(getFoodsSeasonal),
+  getSearchFoods: ctrlWrapper(getSearchFoods),
   getFoodByCategory: ctrlWrapper(getFoodByCategory),
 };
