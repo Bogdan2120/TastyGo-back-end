@@ -3,15 +3,15 @@ const {
   getAllFoods,
   getFoodsById,
   getFoodsSeasonal,
-  getSortPopularFoods,
   getSearchFoods,
+  getFoodByCategory,
 } = require("../controllers/foods");
 
 // Foods
 router.get("/", getAllFoods);
 router.get("/seasonal", getFoodsSeasonal);
-router.get("/popular", getSortPopularFoods);
 router.get("/search", getSearchFoods);
+router.get("/category/:category", getFoodByCategory);
 router.get("/:foodId", getFoodsById);
 
 module.exports = router;
