@@ -17,12 +17,13 @@ cloudinary.config({
   api_secret: `${CLOUD_API_SECRET}`,
 });
 
+const randomNum = Math.floor(Math.random() * 4) + 1;
 const avatarDefPath = path.join(
   __dirname,
   "../",
   "public",
   "avatar",
-  "DefaultAvatar.png"
+  `defAv${randomNum}.jpg`
 );
 
 const avatarDir = path.join(__dirname, "../", "temp");
@@ -35,21 +36,23 @@ const registerUser = async (req, res) => {
     throw HttpError(409, "User already exist");
   }
   const hashPassword = await bcrypt.hash(password, 10);
-  const hashEmail = await bcrypt.hash(email, 10);
-  const sanitizedHash = hashEmail.replace(/\//g, "");
-  const options = {
-    public_id: `${sanitizedHash}`,
-    folder: "TastyGo_Project/users_avatars",
-    overwrite: true,
-  };
-  const avatarDef = await cloudinary.uploader.upload(avatarDefPath, options);
+  // const hashEmail = await bcrypt.hash(email, 10);
+  // const sanitizedHash = hashEmail.replace(/\//g, "");
+  // const options = {
+  //   public_id: `${sanitizedHash}`,
+  //   folder: "TastyGo_Project/users_avatars",
+  //   overwrite: true,
+  // };
+  // const avatarDef = await cloudinary.uploader.upload(avatarDefPath, options);
 
   const newUser = await UserModal.create({
     user: {
       email,
       password: hashPassword,
-      avatarURL: avatarDef.secure_url,
-      avatarNAME: sanitizedHash,
+      // avatarURL: avatarDef.secure_url,
+      avatarURL: "",
+      // avatarNAME: sanitizedHash,
+      avatarNAME: "",
       firstName: firstName,
       phoneFirst: phoneFirst,
       subscribtion: subscribtion,
@@ -157,6 +160,9 @@ const updateAvatar = async (req, res) => {
     public_id: user.avatarNAME,
     folder: "TastyGo_Project/users_avatars",
     overwrite: true,
+    transformation: [
+      { width: 250, height: 250, crop: "fill", gravity: "faces" },
+    ],
   };
 
   // const optimizeAvatar = await Jimp.read(tempUpload);
@@ -178,16 +184,16 @@ const deleteAvatar = async (req, res) => {
 
   const hashEmail = await bcrypt.hash(user.email, 10);
   const sanitizedHash = hashEmail.replace(/\//g, "");
-  const options = {
+  const clOptions = {
     public_id: `${sanitizedHash}`,
     folder: "TastyGo_Project/users_avatars",
     overwrite: true,
   };
-  const avatarDef = await cloudinary.uploader.upload(avatarDefPath, options);
+  const avatarDef = await cloudinary.uploader.upload(avatarDefPath, clOptions);
   await UserModal.findByIdAndUpdate(id, {
-    user: { ...user, avatarURL: avatarDef.secure_url },
+    user: { ...user, avatarURL: "" },
   });
-  res.json(avatarDef.secure_url);
+  res.json("");
 };
 
 module.exports = {

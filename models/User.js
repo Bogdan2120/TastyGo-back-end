@@ -17,11 +17,11 @@ const authSchema = new Schema(
       },
       avatarURL: {
         type: String,
-        required: true,
+        // required: true,
       },
       avatarNAME: {
         type: String,
-        required: true,
+        // required: true,
       },
       firstName: {
         type: String,
