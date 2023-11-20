@@ -1,12 +1,13 @@
 const { HttpError, ctrlWrapper } = require("../hellpers");
 const { UserModal } = require("../models/User");
+const { nanoid } = require("nanoid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const fs = require("fs/promises");
+// const fs = require("fs/promises");
 const path = require("path");
-const Jimp = require("jimp");
-const { options } = require("joi");
+// const Jimp = require("jimp");
+// const { options } = require("joi");
 const cloudinary = require("cloudinary").v2;
 
 const { SECRET_KEY, CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET } = process.env;
@@ -26,7 +27,7 @@ const avatarDefPath = path.join(
   `defAv${randomNum}.jpg`
 );
 
-const avatarDir = path.join(__dirname, "../", "temp");
+// const avatarDir = path.join(__dirname, "../", "temp");
 
 const registerUser = async (req, res) => {
   const { email, password, firstName, phoneFirst, subscribtion } = req.body;
@@ -153,15 +154,17 @@ const updateUser = async (req, res) => {
 const updateAvatar = async (req, res) => {
   const { id } = req.userId;
   const { user } = await UserModal.findById(id);
-  const { path: tempUpload, filename } = req.file;
-  const avatarName = `${id}_${filename}`;
-  const resultUpload = path.join(avatarDir, avatarName);
+  const { path: tempUpload } = req.file;
+
+  const avatarID = user.avatarNAME ? user.avatarNAME : nanoid();
+
+  // const resultUpload = path.join(avatarDir, avatarName);
   const options = {
-    public_id: user.avatarNAME,
+    public_id: avatarID,
     folder: "TastyGo_Project/users_avatars",
     overwrite: true,
     transformation: [
-      { width: 250, height: 250, crop: "fill", gravity: "faces" },
+      { width: 250, height: 250, crop: "fill", gravity: "auto" },
     ],
   };
 
@@ -172,8 +175,13 @@ const updateAvatar = async (req, res) => {
   // await fs.unlink(tempUpload);
 
   const avatarURL = await cloudinary.uploader.upload(tempUpload, options);
+
   await UserModal.findByIdAndUpdate(id, {
-    user: { ...user, avatarURL: avatarURL.secure_url },
+    user: {
+      ...user,
+      avatarURL: avatarURL.secure_url,
+      avatarNAME: avatarID,
+    },
   });
   res.json(avatarURL.secure_url);
   // await fs.unlink(resultUpload);
@@ -183,16 +191,22 @@ const deleteAvatar = async (req, res) => {
   const { id } = req.userId;
   const { user } = await UserModal.findById(id);
 
-  const hashEmail = await bcrypt.hash(user.email, 10);
-  const sanitizedHash = hashEmail.replace(/\//g, "");
-  const clOptions = {
-    public_id: `${sanitizedHash}`,
-    folder: "TastyGo_Project/users_avatars",
-    overwrite: true,
-  };
-  const avatarDef = await cloudinary.uploader.upload(avatarDefPath, clOptions);
+  // const hashEmail = await bcrypt.hash(user.email, 10);
+  // const sanitizedHash = hashEmail.replace(/\//g, "");
+  // const clOptions = {
+  //   public_id: `${sanitizedHash}`,
+  //   folder: "TastyGo_Project/users_avatars",
+  //   overwrite: true,
+  // };
+  // const avatarDef = await cloudinary.uploader.upload(avatarDefPath, clOptions);
+  cloudinary.uploader.destroy(
+    `TastyGo_Project/users_avatars/${user.avatarNAME}`,
+    function (error, result) {
+      console.log(result);
+    }
+  );
   await UserModal.findByIdAndUpdate(id, {
-    user: { ...user, avatarURL: "" },
+    user: { ...user, avatarURL: "", avatarNAME: "" },
   });
   res.json("");
 };
