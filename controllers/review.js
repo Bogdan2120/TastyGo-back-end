@@ -13,12 +13,12 @@ const getAllReview = async (req, res) => {
 const addNewReview = async (req, res) => {
   const { id: userId } = req.userId;
 
-  const { name, avatarURL } = await UserModal.findById(userId);
+  const { user } = await UserModal.findById(userId);
 
   const result = await ReviewModel.create({
     ...req.body,
-    name,
-    avatarURL,
+    name: user.firstName,
+    avatarURL: user.avatarURL,
     owner: userId,
   });
   res.status(201).json(result);

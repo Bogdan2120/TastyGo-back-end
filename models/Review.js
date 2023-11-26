@@ -6,7 +6,7 @@ const reviewShema = new Schema(
       type: String,
       required: true,
     },
-    comenth: {
+    text: {
       type: String,
       required: true,
     },
@@ -17,7 +17,7 @@ const reviewShema = new Schema(
       default: 0,
     },
     date: {
-      type: Date,
+      type: String,
       default: Date.now,
     },
     name: {

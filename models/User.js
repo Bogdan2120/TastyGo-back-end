@@ -1,7 +1,8 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const phoneRegexp = /^\+380\d{9}$/;
+// const phoneRegexp = /^\+380\d{9}$/;
+const phoneRegexp = /^380\d{9}$/;
 
 const authSchema = new Schema(
   {
@@ -17,11 +18,11 @@ const authSchema = new Schema(
       },
       avatarURL: {
         type: String,
-        required: true,
+        // required: true,
       },
       avatarNAME: {
         type: String,
-        required: true,
+        // required: true,
       },
       firstName: {
         type: String,
@@ -48,8 +49,8 @@ const authSchema = new Schema(
         default: "",
       },
       birth: {
-        type: String,
-        default: "",
+        type: Object,
+        default: {},
       },
       subscribtion: {
         type: Boolean,
