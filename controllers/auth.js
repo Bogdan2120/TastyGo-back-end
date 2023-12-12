@@ -183,6 +183,7 @@ const updateAvatar = async (req, res) => {
       avatarNAME: avatarID,
     },
   });
+
   res.json(avatarURL.secure_url);
   // await fs.unlink(resultUpload);
 };
