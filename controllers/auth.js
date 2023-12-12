@@ -174,8 +174,6 @@ const updateAvatar = async (req, res) => {
   // // await fs.rename(tempUpload, resultUpload);
   // await fs.unlink(tempUpload);
 
-
-
   const avatarURL = await cloudinary.uploader.upload(tempUpload, options);
 
   await UserModal.findByIdAndUpdate(id, {
@@ -185,6 +183,7 @@ const updateAvatar = async (req, res) => {
       avatarNAME: avatarID,
     },
   });
+
   res.json(avatarURL.secure_url);
   // await fs.unlink(resultUpload);
 };
