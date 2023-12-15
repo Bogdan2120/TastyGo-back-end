@@ -89,6 +89,25 @@ const getSortPopularFoods = async (req, res) => {
   });
 };
 
+const updatePopularFoods = async (req, res) => {
+  const { idFoods } = req.body;
+
+  await idFoods.map(async (idFood) => {
+    const resultUpdate = await FoodModel.findByIdAndUpdate(
+      idFood,
+      {
+        $inc: { popular: 1 },
+      },
+      { new: true }
+    );
+    if (!resultUpdate) {
+      throw HttpError(404, `Foods doesn\'t update popular`);
+    }
+  });
+
+  res.json(`Foods successfully update popular`);
+};
+
 const getSearchFoods = async (req, res) => {
   const { page: currentPage, limit: currentLimit, search } = req.query;
   const { page, limit, skip } = pagination(currentPage, currentLimit);
@@ -128,4 +147,6 @@ module.exports = {
   getFoodsSeasonal: ctrlWrapper(getFoodsSeasonal),
   getSearchFoods: ctrlWrapper(getSearchFoods),
   getFoodByCategory: ctrlWrapper(getFoodByCategory),
+  getSortPopularFoods: ctrlWrapper(getSortPopularFoods),
+  updatePopularFoods: ctrlWrapper(updatePopularFoods),
 };
