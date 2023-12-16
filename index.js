@@ -10,6 +10,7 @@ const foodRouter = require("./routes/foods");
 const categoryRouter = require("./routes/category");
 const reviewRouter = require("./routes/review");
 const adminRouter = require("./routes/admin");
+const faqRouter = require("./routes/faqQuestins");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/api/food", foodRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/review", reviewRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/faq", faqRouter);
 
 mongoose
   .connect(HOST_DB)
